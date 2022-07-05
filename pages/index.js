@@ -32,24 +32,25 @@ export default function Home() {
       <Head>
         <title>Can my dragon Grow? - Kusama Governance Rewards - Unofficial</title>
         <meta name="title" content="Can my dragon Grow? - Kusama Governance Rewards - Unofficial" />
-        <meta name="description" content="here you can check if you meet the requirements for your blue dragon to grow." />
+        <meta name="description" content="Here you can check if you meet the requirements for your blue dragon to grow." />
 
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://metatags.io/" />
         <meta property="og:title" content="Can my dragon Grow? - Kusama Governance Rewards - Unofficial" />
-        <meta property="og:description" content="here you can check if you meet the requirements for your blue dragon to grow." />
+        <meta property="og:description" content="Here you can check if you meet the requirements for your blue dragon to grow." />
         <meta property="og:image" content="https://ksm-governance-dragon-check.vercel.app/meta.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://twitter.com/niftesty" />
         <meta property="twitter:title" content="Can my dragon Grow? - Kusama Governance Rewards - Unofficial" />
-        <meta property="twitter:description" content="here you can check if you meet the requirements for your blue dragon to grow." />
+        <meta property="twitter:description" content="Here you can check if you meet the requirements for your blue dragon to grow." />
         <meta property="twitter:image" content="https://ksm-governance-dragon-check.vercel.app/meta.png" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <NFTInventory nfts={ govNfts } onCheck={ onCheck } />
+        { false && <NFTInventory nfts={ govNfts } onCheck={ onCheck } /> }
+        Currently under maintanance
       </main>
 
       <footer>

@@ -50,6 +50,10 @@ export default function NFTInventory ( { nfts, onCheck } ) {
     return errorMsg;
   }
 
+  function isDragonEquippedCorrectly() {
+    
+  }
+
   useEffect( () => {
     if ( ! nfts.length ) {
       return;
@@ -73,6 +77,7 @@ export default function NFTInventory ( { nfts, onCheck } ) {
 
     filtered.forEach(nft => {
       const refId = nft.equipped.slice(-3);
+
       if ( typeof refId !== 'undefined' && typeof govIds[ refId ] !== 'undefined' ) {
         if ( nft.id.includes( govIds[ refId ][ 2 ] ) ) {
           nftCounts.epic += 1;
@@ -84,13 +89,13 @@ export default function NFTInventory ( { nfts, onCheck } ) {
           nftCounts.common += 1;
         }
       }
-
       setCounts( nftCounts );
+
       const wg =
         nftCounts.epic + nftCounts.rare + nftCounts.common >= 9 &&
         nftCounts.epic >= 2 &&
-        nftCounts.rare >= 1
-
+        nftCounts.rare >= 1 &&
+        isDragonEquippedCorrectly()
       setWillGrow( wg );
 
     });
@@ -114,8 +119,8 @@ export default function NFTInventory ( { nfts, onCheck } ) {
       { nfts.length !== 0 && <>
         <p>You have { filteredNfts.length } items: <span className="epic">{counts.epic} epic</span> <span className="rare">{counts.rare} rare</span> <span className="common">{counts.common} common</span></p>
         <div className={ resClasses }>
-          { willGrow && <span>Congratulations, your dragon can grow.</span> }
-          { ! willGrow && <span>{ error }</span> }
+          { willGrow && dragonEqippedCorrectly && <span>Congratulations, your dragon can grow.</span> }
+          { ! willGrow || ! dragonEqippedCorrectly && <span>{ error }</span> }
         </div>
       </> }
       { nfts.length === 0 && KSMAddress !== '' && <div class="error">address not found or error getting shelf nfts</div> }
