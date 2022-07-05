@@ -2,8 +2,9 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { forEachLeadingCommentRange } from 'typescript';
 
-export default function NFTInventory ( { nfts, onAdressChange, onCheck } ) {
+export default function NFTInventory ( { nfts, onCheck } ) {
   const [ willGrow, setWillGrow ] = useState( false );
+  const [ KSMAddress, setKSMAddress ] = useState('');
   const [ filteredNfts, setFilteredNfts ] = useState([]);
   const [ error, setError ] = useState( '' );
   const [ counts, setCounts ] = useState( {
@@ -95,6 +96,10 @@ export default function NFTInventory ( { nfts, onAdressChange, onCheck } ) {
     });
   }, [ nfts ]);
 
+  function onAdressChange( e ) {
+    setKSMAddress( e.target.value )
+  }
+
   useEffect( () => {
     setError( getErrorMsg() );
   }, [ counts ] )
@@ -105,7 +110,7 @@ export default function NFTInventory ( { nfts, onAdressChange, onCheck } ) {
       <p className="fsmall">10 items are relevant <a href="https://twitter.com/GovPartRewKSM/status/1541046070184140801">for your dragon to grow (195-204)</a></p>
       <p className="fsmall">Only items that are equipped to your shelf are checked.</p>
       <p className="fsmall">⏰ Snapshot will be taken 10th July 2022 1pm CET ⏰</p>
-      <div>enter your ksm address <input className="ksm-input" onChange={ onAdressChange }></input><button onClick={ onCheck }>check</button></div>
+      <div>enter your ksm address <input className="ksm-input" onChange={ onAdressChange }></input><button onClick={ () => onCheck( KSMAddress ) }>check</button></div>
       { nfts.length !== 0 && <>
         <p>You have { filteredNfts.length } items: <span className="epic">{counts.epic} epic</span> <span className="rare">{counts.rare} rare</span> <span className="common">{counts.common} common</span></p>
         <div className={ resClasses }>
@@ -113,7 +118,7 @@ export default function NFTInventory ( { nfts, onAdressChange, onCheck } ) {
           { ! willGrow && <span>{ error }</span> }
         </div>
       </> }
-      { nfts.length === 0 && <div class="error">address not found or error getting shelf nfts</div> }
+      { nfts.length === 0 && KSMAddress !== '' && <div class="error">address not found or error getting shelf nfts</div> }
     </div>
   )
 }

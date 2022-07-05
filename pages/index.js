@@ -11,22 +11,17 @@ import NFTInventory from '../components/NFTInventory';
 import { fetchGovNftsForWallet } from '../lib/gov-nfts';
 
 export default function Home() {
-  const [ KSMAddress, setKSMAddress ] = useState('DT7kRjGFvRKxGSx5CPUCA1pazj6gzJ6Db11xmkX4yYSNK7m');
+  
   const [ govNfts, setGovNfts ] = useState([]);
 
-  function onAdressChange( e ) {
-    setKSMAddress( e.target.value )
-  }
-
-  async function onCheck() {
+  async function onCheck( KSMAddress ) {
+    console.log( 'checking ksm address', KSMAddress );
     if ( KSMAddress !== '' ) {
       console.log( 'checking' );
       try {
         const nfts = await fetchGovNftsForWallet( KSMAddress )
         setGovNfts( nfts );
-
       } catch(e) {
-        console.log( '123' );
         setGovNfts([]);
       }
     }
@@ -40,7 +35,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <NFTInventory nfts={ govNfts } onAdressChange={ onAdressChange } onCheck={ onCheck } />
+        <NFTInventory nfts={ govNfts } onCheck={ onCheck } />
       </main>
 
       <footer>
