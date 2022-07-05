@@ -44,7 +44,7 @@ export default function Home() {
       </main>
 
       <footer>
-        This is no official app and we take no responsibility for the displayed results. You can check the code yourself at github.
+        This is no official app and we take no responsibility for the displayed results. You can <a href="https://github.com/niklasp/ksm-governance-dragon-check">check the code yourself at github.</a>
       </footer>
     </div>
   )
