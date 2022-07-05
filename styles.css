@@ -1,0 +1,67 @@
+body {
+  font-family: monospace;
+  margin: 0 auto;
+  background: #000;
+  color: #fff;
+  font-size: 20px;
+  background-image: url('public/bg.png');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* background-repeat: repeat; */
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  padding: 30px;
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+main {
+  flex-grow: 1;
+}
+
+p.fsmall {
+  font-size: 16px;
+}
+
+a {
+  color: rgb(153, 204, 255);
+}
+
+.epic {
+  color: #7ee758;
+}
+
+.rare {
+  color: #f5d36c;
+}
+
+.common {
+  color: #ef8686;
+}
+
+.error {
+  color: #f00;
+}
+
+.success {
+  color: #0f0;
+}
+
+input,
+button {
+  height: 30px;
+}
+
+footer {
+  font-style: italic;
+  font-size: 14px;
+  color: #f5d36c;
+}
