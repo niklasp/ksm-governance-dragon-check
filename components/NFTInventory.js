@@ -102,7 +102,8 @@ export default function NFTInventory ( { nfts, onAdressChange, onCheck } ) {
   return (
     <div className="nft-inventory">
       <h1>Kusama Governance Participation Rewards - Dragon</h1>
-      <p className="fsmall">10 items are relevant <a href="https://twitter.com/GovPartRewKSM/status/1541046070184140801">for your dragon to grow (195-204). Only items that are equipped to your shelf count.</a></p>
+      <p className="fsmall">10 items are relevant <a href="https://twitter.com/GovPartRewKSM/status/1541046070184140801">for your dragon to grow (195-204)</a></p>
+      <p className="fsmall">Only items that are equipped to your shelf are checked.</p>
       <p className="fsmall">⏰ Snapshot will be taken 10th July 2022 1pm CET ⏰</p>
       <div>enter your ksm address <input className="ksm-input" onChange={ onAdressChange }></input><button onClick={ onCheck }>check</button></div>
       { nfts.length !== 0 && <>
