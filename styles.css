@@ -96,6 +96,7 @@ button {
 }
 
 input {
+  padding: 10px;
   display: block;
   min-width: 500px;
   margin-bottom: 20px;

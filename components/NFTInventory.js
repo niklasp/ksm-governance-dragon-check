@@ -95,7 +95,7 @@ export default function NFTInventory ( { onCheck } ) {
       <p className="fsmall">Only items that are equipped to your shelf are checked.</p>
       <p className="fsmall">⏰ Snapshot will be taken 10th July 2022 1pm CET ⏰</p>
       <div className="pt enter">
-        <input placeholder="enter your KSM address" minlength="47" maxlength="47" className="ksm-input" onChange={ onAdressChange }></input>
+        <input placeholder="enter your KSM address" minLength="47" maxLength="47" className="ksm-input" onChange={ onAdressChange }></input>
       </div>
       { isLoading && 'Loading...' }
       { queryError &&
