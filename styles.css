@@ -1,3 +1,23 @@
+button,
+input,
+optgroup,
+select,
+textarea,html input[type="button"],
+input[type="reset"],
+input[type="submit"],button[disabled],
+html input[disabled],button::-moz-focus-inner,
+input::-moz-focus-inner, input[type="checkbox"],
+input[type="radio"], input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button, input[type="search"], input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  border:none;
+  background-image:none;
+  background-color:transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
 body {
   font-family: monospace;
   margin: 0 auto;
@@ -27,8 +47,20 @@ main {
   flex-grow: 1;
 }
 
+.pt {
+  padding-top: 20px;
+}
+
+.enter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 p.fsmall {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 a {
@@ -57,8 +89,25 @@ a {
 
 input,
 button {
+  font-size: 16px;
+  font-family: monospace;
   height: 30px;
+  background: #fff;
 }
+
+input {
+  display: block;
+  min-width: 500px;
+  margin-bottom: 20px;
+}
+input:invalid {
+  border: 2px solid red;
+}
+
+input:valid {
+  border: 2px solid rgb(24, 194, 30);
+}
+
 
 footer {
   font-style: italic;

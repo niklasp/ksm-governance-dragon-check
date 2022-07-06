@@ -8,24 +8,24 @@ import {
 } from "react-query";
 import { useEffect, useState } from 'react';
 import NFTInventory from '../components/NFTInventory';
-import { fetchGovNftsForWallet } from '../lib/gov-nfts';
+import { fetchGovNftsForWallet, fetchGovNftsForAddress } from '../lib/gov-nfts';
 
 export default function Home() {
   
-  const [ govNfts, setGovNfts ] = useState([]);
+  // const [ govNfts, setGovNfts ] = useState([]);
 
-  async function onCheck( KSMAddress ) {
-    console.log( 'checking ksm address', KSMAddress );
-    if ( KSMAddress !== '' ) {
-      console.log( 'checking' );
-      try {
-        const nfts = await fetchGovNftsForWallet( KSMAddress )
-        setGovNfts( nfts );
-      } catch(e) {
-        setGovNfts([]);
-      }
-    }
-  }
+  // async function onCheck( KSMAddress ) {
+  //   // console.log( 'xxx', isLoading, error, data );
+  //   // console.log( 'checking ksm address', KSMAddress );
+  //   if ( KSMAddress !== '' ) {
+  //     try {
+  //       const nfts = await fetchGovNftsForWallet( KSMAddress )
+  //       setGovNfts( nfts );
+  //     } catch(e) {
+  //       setGovNfts([]);
+  //     }
+  //   }
+  // }
 
   return (
     <div className="container">
@@ -49,8 +49,7 @@ export default function Home() {
       </Head>
 
       <main>
-        { false && <NFTInventory nfts={ govNfts } onCheck={ onCheck } /> }
-        Currently under maintanance
+        <NFTInventory />
       </main>
 
       <footer>

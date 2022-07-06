@@ -1,8 +1,11 @@
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { forEachLeadingCommentRange } from 'typescript';
+import { fetchGovNftsForAddress } from '../lib/gov-nfts';
 
-export default function NFTInventory ( { nfts, onCheck } ) {
+export default function NFTInventory ( { onCheck } ) {
+  // const [ govNfts, setGovNfts ] = useState( {} );
   const [ willGrow, setWillGrow ] = useState( false );
   const [ KSMAddress, setKSMAddress ] = useState('');
   const [ filteredNfts, setFilteredNfts ] = useState([]);
@@ -12,6 +15,18 @@ export default function NFTInventory ( { nfts, onCheck } ) {
     rare: 0,
     common: 0,
   });
+
+  let itemCount = 0;
+
+  const { isLoading, error: queryError, data } = useQuery(
+    ['nfts', KSMAddress ],
+    () => fetchGovNftsForAddress( KSMAddress ),
+    {
+      enabled: KSMAddress.length === 47,
+    }
+  );
+
+  console.log( 'xxx', isLoading, queryError, data );
 
   //id: [ common, rare, epic ]
   const govIds = {
@@ -51,59 +66,22 @@ export default function NFTInventory ( { nfts, onCheck } ) {
   }
 
   function isDragonEquippedCorrectly() {
-    
+    return true;
   }
-
-  useEffect( () => {
-    if ( ! nfts.length ) {
-      return;
-    }
-
-    const nftCounts = {
-      epic: 0,
-      rare: 0,
-      common: 0,
-    }
-
-    const filtered = nfts.filter(nft=> {
-      const refId = nft.equipped.slice(-3);
-      console.log( 'ref', refId );
-      return nft.equipped !== '' && 195 <= parseInt( refId ) && 204 >= parseInt( refId );
-    })
-
-    setFilteredNfts( filtered );
-
-    console.log( 'Filtered', filtered );
-
-    filtered.forEach(nft => {
-      const refId = nft.equipped.slice(-3);
-
-      if ( typeof refId !== 'undefined' && typeof govIds[ refId ] !== 'undefined' ) {
-        if ( nft.id.includes( govIds[ refId ][ 2 ] ) ) {
-          nftCounts.epic += 1;
-        }
-        if ( nft.id.includes( govIds[ refId ][ 1 ] ) ) {
-          nftCounts.rare += 1;
-        }
-        if ( nft.id.includes(  govIds[ refId ][ 0 ] ) ) {
-          nftCounts.common += 1;
-        }
-      }
-      setCounts( nftCounts );
-
-      const wg =
-        nftCounts.epic + nftCounts.rare + nftCounts.common >= 9 &&
-        nftCounts.epic >= 2 &&
-        nftCounts.rare >= 1 &&
-        isDragonEquippedCorrectly()
-      setWillGrow( wg );
-
-    });
-  }, [ nfts ]);
 
   function onAdressChange( e ) {
     setKSMAddress( e.target.value )
   }
+
+  useEffect( () => {
+    const wg =
+      data?.epic.length + data?.rare.length + data?.common.length >= 9 &&
+      data?.epic.length >= 2 &&
+      data?.rare.length >= 1 &&
+      isDragonEquippedCorrectly()
+
+    setWillGrow( wg );
+  }, [ data ] )
 
   useEffect( () => {
     setError( getErrorMsg() );
@@ -115,15 +93,28 @@ export default function NFTInventory ( { nfts, onCheck } ) {
       <p className="fsmall">10 items are relevant <a href="https://twitter.com/GovPartRewKSM/status/1541046070184140801">for your dragon to grow (195-204)</a></p>
       <p className="fsmall">Only items that are equipped to your shelf are checked.</p>
       <p className="fsmall">⏰ Snapshot will be taken 10th July 2022 1pm CET ⏰</p>
-      <div>enter your ksm address <input className="ksm-input" onChange={ onAdressChange }></input><button onClick={ () => onCheck( KSMAddress ) }>check</button></div>
-      { nfts.length !== 0 && <>
-        <p>You have { filteredNfts.length } items: <span className="epic">{counts.epic} epic</span> <span className="rare">{counts.rare} rare</span> <span className="common">{counts.common} common</span></p>
+      <div className="pt enter">
+        <input placeholder="enter your KSM address" minlength="47" maxlength="47" className="ksm-input" onChange={ onAdressChange }></input>
+      </div>
+      { isLoading && 'Loading...' }
+      { queryError &&
+        <div className="error">
+          { queryError.status === 404 && 'No valid KSM address' }
+          { queryError.status === 429 && 'API limit reached, try later' }
+        </div>
+      }
+      { data?.common?.length && <>
+        <p>
+          You have { data.common.length + data.rare.length + data.epic.length }/10 items:
+          <span className="epic"> { data.epic.length } epic </span>
+          <span className="rare">{ data.rare.length } rare </span>
+          <span className="common">{ data.common.length } common</span>
+        </p>
         <div className={ resClasses }>
-          { willGrow && dragonEqippedCorrectly && <span>Congratulations, your dragon can grow.</span> }
-          { ! willGrow || ! dragonEqippedCorrectly && <span>{ error }</span> }
+          { willGrow && isDragonEquippedCorrectly() && <span>Congratulations, your dragon can grow.</span> }
+          { ! willGrow || ! isDragonEquippedCorrectly() && <span>{ error }</span> }
         </div>
       </> }
-      { nfts.length === 0 && KSMAddress !== '' && <div class="error">address not found or error getting shelf nfts</div> }
     </div>
   )
 }
