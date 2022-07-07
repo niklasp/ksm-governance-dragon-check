@@ -35,6 +35,10 @@ body {
   margin: 0;
 }
 
+#__next {
+  max-width: 100%;
+}
+
 .container {
   padding: 30px;
   height: calc(100vh - 60px);
@@ -98,7 +102,8 @@ button {
 input {
   padding: 10px;
   display: block;
-  min-width: 500px;
+  width: 100%;
+  max-width: 500px;
   margin-bottom: 20px;
 }
 input:invalid {
