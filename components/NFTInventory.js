@@ -26,8 +26,6 @@ export default function NFTInventory ( { onCheck } ) {
     }
   );
 
-  console.log( 'xxx', isLoading, queryError, data );
-
   //id: [ common, rare, epic ]
   const govIds = {
     195: [ '195BBIRD', '195BRBIRD', '195RBIRD' ],
@@ -49,24 +47,28 @@ export default function NFTInventory ( { onCheck } ) {
     'error': ! willGrow,
   });
 
-  const getErrorMsg = () => {
+  const getErrorMsg = ( data ) => {
+    if ( typeof data === 'undefined' ) {
+      return 'error getting data';
+    }
+    if ( ! data.dragonCorrect ) {
+      return 'You do not have the dragon equipped or not selected the correct dragon resource over the egg resource.'
+    }
     const errorMsg = 'For your dragon to grow, ';
-    const totalItems = counts.common + counts.rare + counts.epic;
-    if ( counts.common < totalItems ) {
-      errorMsg += `you need ${ 9 - counts.common - counts.rare - counts.epic } more common items `
+    const totalItems = data.common.length + data.rare.length + data.epic.length;
+    if ( data.common.length < totalItems ) {
+      errorMsg += `equip ${ 9 - data.common.length - data.rare.length - data.epic.length } more common items `
     }
-    if ( counts.rare < 1 ) {
-      errorMsg += `you need ${ 1 - counts.rare } more rare items `
+    if ( data.rare.length < 1 ) {
+      errorMsg += `equip ${ 1 - data.rare.length } more rare items `
     }
-    if ( counts.epic < 2 ) {
-      errorMsg += `you need ${ 2 - counts.epic } more epic items `
+    if ( data.epic.length < 2 ) {
+      errorMsg += `equip ${ 2 - data.epic.length } more epic items `
     }
+
+    console.log( 'Error', errorMsg );
 
     return errorMsg;
-  }
-
-  function isDragonEquippedCorrectly() {
-    return true;
   }
 
   function onAdressChange( e ) {
@@ -78,14 +80,17 @@ export default function NFTInventory ( { onCheck } ) {
       data?.epic.length + data?.rare.length + data?.common.length >= 9 &&
       data?.epic.length >= 2 &&
       data?.rare.length >= 1 &&
-      isDragonEquippedCorrectly()
+      data.dragonCorrect;
 
     setWillGrow( wg );
+    setError( getErrorMsg( data ) );
+
+    console.log( 'received', data );
   }, [ data ] )
 
-  useEffect( () => {
-    setError( getErrorMsg() );
-  }, [ counts ] )
+  // useEffect( () => {
+  //   setError( getErrorMsg() );
+  // }, [ counts ] )
 
   return (
     <div className="nft-inventory">
@@ -104,6 +109,12 @@ export default function NFTInventory ( { onCheck } ) {
           { queryError.status === 429 && 'API limit reached, try later' }
         </div>
       }
+      { data && 
+        <p>Dragon available and equipped correctly?
+          { data?.dragonCorrect && <span className="success"> Yes</span>}
+          { ! data?.dragonCorrect && <span className="error"> No</span>}
+        </p>
+      }
       { data?.common?.length && <>
         <p>
           You have { data.common.length + data.rare.length + data.epic.length }/10 items:
@@ -112,8 +123,8 @@ export default function NFTInventory ( { onCheck } ) {
           <span className="common">{ data.common.length } common</span>
         </p>
         <div className={ resClasses }>
-          { willGrow && isDragonEquippedCorrectly() && <span>Congratulations, your dragon can grow.</span> }
-          { ! willGrow || ! isDragonEquippedCorrectly() && <span>{ error }</span> }
+          { willGrow && data.dragonCorrect && <span>Congratulations, your dragon can grow.</span> }
+          { ! willGrow && <span>{ error }</span> }
         </div>
       </> }
     </div>
